@@ -4,6 +4,6 @@
   "dependencies": {
     "foundation": ">=5.2.3",
     "modernizr": "~2.8.2",
-    "threejs": "*"
+    "pixi": "~2.1.1"
   }
 }
