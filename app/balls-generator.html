@@ -1,0 +1,66 @@
+<!doctype html>
+<html class="no-js" lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Balls generator</title>
+</head>
+
+<body>
+  <canvas id="test"></canvas>
+<script src="bower_components/lodash/dist/lodash.min.js"></script>
+<script src="bower_components/zepto/zepto.min.js"></script>
+<script src="scripts/main.js"></script>
+<script type="text/javascript">
+var antImg = new Image();
+var antPos = [];
+var offsetX = 50;
+var offsetY = 50;
+
+function rndAntPositions(rad, posArray){
+  var x = Math.random() * rad * 2;
+  var y = Math.random() * rad * 2;
+  while(x * x + y * y > rad*rad){
+    x = Math.random() * rad*2 - rad;
+    y = Math.random() * rad*2 - rad;
+  }
+  var phi = Math.atan2(y,x);
+  posArray.push({x:x, y:y, phi:phi});
+}
+
+function randImg(ctx, img, pos, rotation){
+  ctx.translate(pos.x,pos.y);
+  ctx.scale(0.05,0.05);
+  ctx.rotate(pos.phi+Math.PI*0.5+0.4);
+  ctx.drawImage(img,0,0);
+  ctx.setTransform(1, 0, 0, 1, 0, 0);
+}
+
+antImg.onload = function(){
+  var canv = $("#test")[0];
+  canv.width = antImg.width;
+  canv.height = antImg.height;
+  var ctx = canv.getContext("2d");
+  var rad = antImg.width/12;
+  for(var i=0; i<100; i++){
+    rndAntPositions(rad, antPos);
+  }
+  var rt = 0;
+  setInterval(function(){
+    ctx.clearRect(0,0,canv.width,canv.height);
+    _.each(antPos,function(p){
+      ctx.translate(offsetX + rad, offsetY + rad);
+      ctx.rotate(rt);
+      randImg(ctx, antImg, p);
+      rt += 0.002;
+    });
+  },50);
+  
+  //canv.getContext("2d").drawImage(antImg,0,0);
+};
+antImg.src = "assets/ant/ant.png";
+</script>
+</body>
+
+</html>
