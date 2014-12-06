@@ -3,9 +3,12 @@ var cursors;
 var playerAlive = false;
 var game;
 var mouse;
+var mouseCursor;
+
+var bee = require('./bee');
 
 function preload() {
-  game.load.image('zombee', 'assets/zombee.jpg');
+//  game.load.image('zombee', 'assets/zombee.jpg');
   game.load.image('cursor1', 'images/cursor1.png');
   game.load.image('cursor2', 'images/cursor2.png');
 }
@@ -13,11 +16,16 @@ function preload() {
 function create() {
   cursors = game.input.keyboard.createCursorKeys();
   mouse = game.input.mousePointer;
+  mouseCursor = game.add.sprite(mouse.x - 16, mouse.y - 16, 'cursor1');
+  game.physics.startSystem(Phaser.Physics.ARCADE);
   playerAlive = true;
+  bee.init(game);
+//  bee.addBee(200, 500);
 }
 
 function update() {
-  game.add.sprite(mouse.x - 16, mouse.y - 16, 'cursor1');
+  mouseCursor.x = mouse.x - 16;
+  mouseCursor.y = mouse.y - 16;
   if (playerAlive) {
     if (cursors.left.isDown) {
       velocity = -100;
