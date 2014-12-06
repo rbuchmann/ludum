@@ -9,6 +9,14 @@ var rename = require('gulp-rename');
 var rev = require('gulp-rev');
 var source = require('vinyl-source-stream');
 
+function swallowError (error) {
+
+    //If you want details of the error in the console
+    console.log(error.toString());
+
+    this.emit('end');
+}
+
 // Vendor
 gulp.task('vendor', function() {
   return browserify({debug: true})
@@ -16,6 +24,7 @@ gulp.task('vendor', function() {
     .require('lodash', {expose: 'underscore'})
     .require('backbone')
     .bundle()
+    .on('error', swallowError)
     .pipe(source('vendor.js'))
     .pipe(gulp.dest(config.dist + '/scripts/'));
 });
@@ -28,6 +37,7 @@ gulp.task('browserify', function() {
     .external('lodash')
     .transform(partialify) // Transform to allow requireing of templates
     .bundle()
+    .on('error', swallowError)
     .pipe(source('main.js'))
     .pipe(gulp.dest(config.dist + '/scripts/'));
 });
