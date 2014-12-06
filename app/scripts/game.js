@@ -7,6 +7,8 @@ function preload() {
 }
 
 function create() {
+    cursors = game.input.keyboard.createCursorKeys();
+    playerAlive = true;
 }
 
 function update() {
@@ -26,11 +28,6 @@ function update() {
 module.exports = {
   create: function(){
     var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
-
-    cursors = game.input.keyboard.createCursorKeys();
-
-    playerAlive = true;
-
     return game;  
   }
 }
