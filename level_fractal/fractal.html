@@ -1,0 +1,254 @@
+<html>
+<script src='perlin.js'></script>
+<script type="text/javascript">
+
+var movement_size = 15.0;
+var smoothness = 5.0;
+var gain = 0.45;
+var base_frequency = 0.0075;
+
+var canvas, ctx, flag = false,   
+    currX = 0,
+    currY = 0,
+    dot_flag = false;
+
+var x = "black",
+    y = 2;
+
+function init() {
+    canvas = document.getElementById('can');
+    ctx = canvas.getContext("2d");
+    w = canvas.width;
+    h = canvas.height;
+
+    canvas.addEventListener("mousemove", function (e) {
+        findxy('move', e)
+    }, false);
+    canvas.addEventListener("mousedown", function (e) {
+        findxy('down', e)
+    }, false);
+    canvas.addEventListener("mouseup", function (e) {
+        findxy('up', e)
+    }, false);
+    canvas.addEventListener("mouseout", function (e) {
+        findxy('out', e)
+    }, false);
+    
+    erase();
+}
+
+function draw() {
+    ctx.beginPath();    
+    ctx.arc(currX, currY, 15, 0, 2 * Math.PI, false);
+    ctx.fillStyle = 'red';
+    ctx.fill();
+    ctx.closePath();
+}
+
+function erase() {    
+    ctx.fillStyle = 'black';
+    ctx.fillRect(0, 0, w, h);
+    document.getElementById("canvasimg").style.display = "none";    
+}
+
+function findxy(res, e) {
+    if (res == 'down') {
+        flag = true;
+    }
+    if (res == 'up' || res == "out") {
+        flag = false;
+    }
+    if (res == 'move') {
+        if (flag) {
+            currX = e.clientX - canvas.offsetLeft;
+            currY = e.clientY - canvas.offsetTop;
+            draw();
+        }
+    }
+}
+
+function fBm(x, y, z, gain, freq, lacunarity, octaves)
+{
+    var total = 0.0;
+    var amplitude = gain;
+                    
+    for(i = 0; i < octaves; ++i)
+    {
+        total += noise.simplex3(x * freq, y * freq, z * freq) * amplitude;         
+        freq *= lacunarity;
+        amplitude *= gain;
+    }
+           
+    return total;
+}
+
+function fBms(x, y, seed)
+{    
+    //return fBm(x, y, seed, 0.45, 0.0075,  1.6, 7);
+    return fBm(x, y, seed, gain, base_frequency,  1.6, 7);
+}
+
+function dilate(area)
+{
+    var image = ctx.getImageData(0,0,canvas.width, canvas.height);    
+    var input = image.data;
+            
+    for(var x = 1; x < canvas.width - 1; x++)
+    {
+        for (var y = 1; y < canvas.height - 1; y++)
+        {  
+            var found = false
+            for(var dx = -area; dx <= area; dx++)
+            {
+                if(found) break;
+                for(var dy = -area; dy <= area; dy++)
+                {                
+                    if(found) break
+                    
+                    if(Math.sqrt(dx*dx+dy*dy) < area)
+                    {   
+                        var cell = ((x + dx) + (y + dy)  * canvas.width) * 4;
+                   
+                        if(input[cell] > 128)
+                            found = true;
+                    }
+                }
+            }
+                           
+            var cell = (x + y * canvas.width) * 4; 
+            if(found == true)
+                input[cell+1] = 255;
+            else
+                input[cell+1] = 0;            
+        }
+    }
+    
+    // Stupid...
+    for(var x = 0; x < canvas.width; x++)
+    {
+        for (var y = 0; y < canvas.height; y++)
+        {
+            var cell = (Math.floor(x) + Math.floor(y) * canvas.width) * 4;
+            input[cell] = input[cell+1];
+            input[cell+1] = 0;
+        }
+    }   
+    
+    ctx.putImageData(image,0,0);
+}
+
+
+function erode(area)
+{
+    var image = ctx.getImageData(0,0,canvas.width, canvas.height);    
+    var input = image.data;
+            
+    for(var x = 1; x < canvas.width - 1; x++)
+    {
+        for (var y = 1; y < canvas.height - 1; y++)
+        {  
+            var found = false
+            for(var dx = -area; dx <= area; dx++)
+            {
+                if(found) break;
+                for(var dy = -area; dy <= area; dy++)
+                {                
+                    if(found) break
+                    
+                    if(Math.sqrt(dx*dx+dy*dy) < area)
+                    {   
+                        var cell = ((x + dx) + (y + dy)  * canvas.width) * 4;
+                   
+                        if(input[cell] < 128)
+                            found = true;
+                    }
+                }
+            }
+                           
+            var cell = (x + y * canvas.width) * 4; 
+            if(found == true)
+                input[cell+1] = 0;
+            else
+                input[cell+1] = 255;            
+        }
+    }
+    
+    // Stupid...
+    for(var x = 0; x < canvas.width; x++)
+    {
+        for (var y = 0; y < canvas.height; y++)
+        {
+            var cell = (Math.floor(x) + Math.floor(y) * canvas.width) * 4;
+            input[cell] = input[cell+1];
+            input[cell+1] = 0;
+        }
+    }   
+    
+    ctx.putImageData(image,0,0);
+}
+
+
+function applyFractal()
+{
+    var image = ctx.getImageData(0,0,canvas.width, canvas.height);    
+    var input = image.data;
+    
+    var seedA = Math.random() * 10000.0;
+    var seedB = Math.random() * 10000.0;
+      
+        
+    for(var x = 0; x < canvas.width; x++)
+    {
+        for (var y = 0; y < canvas.height; y++)
+        {
+            var cell = (Math.floor(x) + Math.floor(y) * canvas.width) * 4;
+            var inval = input[cell];
+            
+            if(inval > 0)
+            {
+                //var distorted = rBd(x, y, 3, 10.0);
+                var distorted = [
+                movement_size*fBms(x, y, seedA),
+                movement_size*fBms(x, y, seedB)
+                ];
+                
+                var dx = Math.floor(x + distorted[0]);
+                var dy = Math.floor(y + distorted[1]);
+                dx = Math.min(dx, canvas.width);
+                dy = Math.min(dy, canvas.height);                
+                dx = Math.max(dx, 0);
+                dy = Math.max(dy, 0);                
+                
+                var cellout = (dx + dy * canvas.width) * 4;
+                input[cellout +1] = inval;
+            }         
+        }
+    }
+    
+    for(var x = 0; x < canvas.width; x++)
+    {
+        for (var y = 0; y < canvas.height; y++)
+        {
+            var cell = (Math.floor(x) + Math.floor(y) * canvas.width) * 4;
+            input[cell] = input[cell+1];
+            input[cell+1] = 0;
+        }
+    }   
+    
+    ctx.putImageData(image,0,0);
+        
+    dilate(smoothness);
+    erode(smoothness);
+}
+
+
+</script>
+<body onload="init()">
+    <canvas id="can" width="1200" height="600" style="border:1px solid red;"></canvas>
+    <img id="canvasimg"  style="display:none;">
+    
+   
+    <input type="button" value="Fractalize!" id="btn" size="30" onclick="applyFractal()">
+    <input type="button" value="clear" id="clr" size="23" onclick="erase()">
+</body>
+</html>
