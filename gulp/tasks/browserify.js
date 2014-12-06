@@ -26,7 +26,6 @@ gulp.task('browserify', function() {
     .add('./app/scripts/main.js')
     .external('jquery')
     .external('lodash')
-    .external('backbone')
     .transform(partialify) // Transform to allow requireing of templates
     .bundle()
     .pipe(source('main.js'))
