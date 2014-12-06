@@ -4,5 +4,6 @@
   "dependencies": {
     "modernizr": "~2.8.2",
     "phaser": "~2.2.1"
+    "lodash": "~2.4.1"
   }
 }
