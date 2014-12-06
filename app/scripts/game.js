@@ -41,6 +41,7 @@ function update() {
       velocity = 0;
     }
   }
+  player.move(velocity / 25, 0);
 }
 
 module.exports = {
