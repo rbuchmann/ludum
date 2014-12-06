@@ -10,8 +10,9 @@ var player = require('./player');
 var level = require('./level');
 
 function preload() {
-  game.load.image('ant', 'images/cursor2.png');
   game.load.image('zombee', 'assets/zombee/zombee_0.png');
+//  game.load.image('zombee', 'assets/zombee.jpg');
+  game.load.image('ant', 'assets/antball.png');
   game.load.image('cursor1', 'images/cursor1.png');
   game.load.image('cursor2', 'images/cursor2.png');
 }
@@ -23,7 +24,6 @@ function create() {
   cursors = game.input.keyboard.createCursorKeys();
   mouse = game.input.mousePointer;
   game.world.setBounds(0, 0, 3000, 3000); 
-  mouseCursor = game.add.sprite(mouse.x - 16, mouse.y - 16, 'cursor1');
   game.physics.startSystem(Phaser.Physics.P2JS);
   game.physics.p2.gravity.y = 1000;
   game.physics.p2.setImpactEvents(true);
@@ -37,8 +37,6 @@ function create() {
 }
 
 function update() {
-  mouseCursor.x = mouse.x - 16;
-  mouseCursor.y = mouse.y - 16;
   if (playerAlive) {
     if (cursors.left.isDown) {
       velocity = -100;
