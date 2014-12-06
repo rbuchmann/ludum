@@ -2,8 +2,7 @@
   "name": "ludum",
   "version": "0.0.0",
   "dependencies": {
-    "foundation": ">=5.2.3",
     "modernizr": "~2.8.2",
-    "threejs": "*"
+    "phaser": "~2.2.1"
   }
 }

@@ -7,8 +7,6 @@
 
 'use strict';
 
-var App = require('./app.js');
+var app = require('./app.js');
 
-var app = new App();
-
-app.beep();
+window.app = app;

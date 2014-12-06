@@ -7,12 +7,6 @@
 
 'use strict';
 
-function App() {
-  console.log('app initialized');
+module.exports = {
+  game: require("./game.js")
 }
-
-module.exports = App;
-
-App.prototype.beep = function () {
-  console.log('boop');
-};
