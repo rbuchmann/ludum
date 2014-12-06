@@ -9,8 +9,8 @@ var bee = require('./bee');
 var player = require('./player');
 
 function preload() {
-//  game.load.image('zombee', 'assets/zombee.jpg');
   game.load.image('ant', 'images/cursor2.png');
+  game.load.image('zombee', 'assets/zombee/zombee.gif');
   game.load.image('cursor1', 'images/cursor1.png');
   game.load.image('cursor2', 'images/cursor2.png');
 }
@@ -24,7 +24,7 @@ function create() {
   bee.init(game);
   player.init(game);
   player.addPlayer(100, 100);
-//  bee.addBee(200, 500);
+  bee.addBee(300, 200);
 }
 
 function update() {
@@ -42,6 +42,7 @@ function update() {
     }
   }
   player.move(velocity / 25, 0);
+  bee.updateBees();
 }
 
 module.exports = {
