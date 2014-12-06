@@ -7,22 +7,22 @@ function preload() {
 }
 
 function create() {
-    cursors = game.input.keyboard.createCursorKeys();
-    playerAlive = true;
+  cursors = game.input.keyboard.createCursorKeys();
+  playerAlive = true;
 }
 
 function update() {
-    if (playerAlive) {
-        if (cursors.left.isDown) {
-            velocity = -100;
-        }
-        else if (cursors.right.isDown) {
-            velocity = 100;
-        }
-        else {
-            velocity = 0;
-        }
+  if (playerAlive) {
+    if (cursors.left.isDown) {
+      velocity = -100;
     }
+    else if (cursors.right.isDown) {
+      velocity = 100;
+    }
+    else {
+      velocity = 0;
+    }
+  }
 }
 
 module.exports = {
