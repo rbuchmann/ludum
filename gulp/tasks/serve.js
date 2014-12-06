@@ -12,7 +12,8 @@ gulp.task('connect', function () {
     .use('/', connect.static('.tmp'))
     // paths to bower_components should be relative to the current file
     // e.g. in app/index.html you should use ../bower_components
-    .use('/bower_components', connect.static('bower_components'))
+    .use('/bower_components', connect.static('./app/bower_components'))
+    .use('/assets', connect.static('./app/assets'))
     .use(connect.directory('app'));
 
   require('http').createServer(app)
