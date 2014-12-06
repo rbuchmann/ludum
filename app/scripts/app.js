@@ -8,5 +8,6 @@
 'use strict';
 
 module.exports = {
-  game: require("./game.js")
-}
+    game: require("./game.js"),
+    levelgen : require('./levelgen.js')
+};
