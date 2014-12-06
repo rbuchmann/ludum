@@ -1,9 +1,10 @@
-
 var velocity = 0;
 var cursors;
 var playerAlive = false;
+var game;
 
 function preload() {
+  game.load.image('zombee', 'assets/zombee.jpg');
 }
 
 function create() {
@@ -27,7 +28,7 @@ function update() {
 
 module.exports = {
   create: function(){
-    var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
-    return game;  
-  }
-}
+    game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+  },
+  game: game
+};
