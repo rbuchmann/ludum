@@ -6,9 +6,11 @@ var mouse;
 var mouseCursor;
 
 var bee = require('./bee');
+var player = require('./player');
 
 function preload() {
 //  game.load.image('zombee', 'assets/zombee.jpg');
+  game.load.image('ant', 'images/cursor2.png');
   game.load.image('cursor1', 'images/cursor1.png');
   game.load.image('cursor2', 'images/cursor2.png');
 }
@@ -20,6 +22,8 @@ function create() {
   game.physics.startSystem(Phaser.Physics.ARCADE);
   playerAlive = true;
   bee.init(game);
+  player.init(game);
+  player.addPlayer(100, 100);
 //  bee.addBee(200, 500);
 }
 
