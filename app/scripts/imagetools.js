@@ -1,5 +1,6 @@
 function getPixel( imageData, p ) {
-    var [x,y] = p;
+    var x = p[0];
+    var y = p[1];
     var position = ( x + imageData.width * y ) * 4;
     var data = imageData.data;
     return [data[position], data[position + 1], data[position + 2]];
