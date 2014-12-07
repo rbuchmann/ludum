@@ -44,9 +44,9 @@ function mapToGlobal(pos, dir, scale) {
         return x * scale;
     };
     scale = tools.defaultFor(scale,10);
-    var [x,y] = _.map(pos, s);
-    var [i,j] = _.map(dir,s);
-    return [x+i, y+j];
+    var p = _.map(pos, s);
+    var d = _.map(dir,s);
+    return [p[0]+d[0], p[1]+d[1]];
 }
 
 function dirChecker (dir) {
