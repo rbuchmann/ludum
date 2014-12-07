@@ -29,15 +29,15 @@ function create() {
   mouse = game.input.mousePointer;
   game.world.setBounds(0, 0, 3000, 3000); 
   game.physics.startSystem(Phaser.Physics.P2JS);
-  game.physics.p2.gravity.y = 200;
+  game.physics.p2.gravity.y = 300;
   game.physics.p2.setImpactEvents(true);
   game.physics.p2.restitution = 0.6;
   playerAlive = true;
   player.init(game);
-  player.addPlayer(100, 100);
+  player.addPlayer(300,300);
   level.init(game);
   bee.init(game);
-  bee.addBee(500, 30);
+  bee.addBee(250, 350);
 }
 
 function update() {

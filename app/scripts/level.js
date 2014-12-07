@@ -21,23 +21,22 @@ function drawTile (points) {
 }
 
 function resize(pt) {
-  return [pt[0]*tileSize, pt[1]*tileSize];
+  return [pt[0]*tileSize-halfSize, pt[1]*tileSize-halfSize];
 }
 
 function addTile(x, y, name, poly, rotation) {
   if (name == "empty") return;
-  var tile = game.add.tileSprite(tileSize*x+halfSize, tileSize*y+halfSize, 
-				 tileSize, tileSize, name);
-//				 tileSize, tileSize);
+  var tile = game.add.sprite(tileSize*x+halfSize, tileSize*y+halfSize, name);
   var points = _.map(poly,resize);
-//  tile.anchor.setTo(0.5,0.5);
+  tile.anchor.setTo(0.5,0.5);
   if (poly != null) {
-    game.physics.p2.enable(tile, true);
-//    game.physics.p2.enable(tile);
-    tile.body.clearShapes();
-    tile.body.addPolygon({}, points);
-    tile.body.angle=90*rotation;
-    tile.body.kinematic = true;  
+      game.physics.p2.enable(tile);
+      // this could cause problems...
+      tile.body.data.adjustCenterOfMass = function(){};
+      tile.body.addPolygon({}, points);
+      // TODO: maybe re-define function here;
+      tile.body.angle=90*rotation;
+      tile.body.kinematic = true;  
   }
 } 
 
