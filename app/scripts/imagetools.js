@@ -33,9 +33,23 @@ function colToMarker(c) {
     return _.max(c) === 0 ? 0 : 1 ;
 }
 
+function imageDataToBitmap (imgd) {
+    var bitmap = [];
+    for(var y = 0; y < imgd.height; y++) {
+        bitmap[y] = [];
+        for(var x = 0; x < imgd.width; x++) {
+            bitmap[y][x] = colToMarker(getPixel(imgd, [x, y]));
+        }
+    }
+    return {height : imgd.height,
+            width : imgd.width,
+            data : bitmap};
+}
+
 module.exports = {
     drawPolyLine : drawPolyLine,
     drawLine : drawLine,
     getPixel : getPixel,
-    colToMarker : colToMarker
+    colToMarker : colToMarker,
+    imageDataToBitmap : imageDataToBitmap
 };

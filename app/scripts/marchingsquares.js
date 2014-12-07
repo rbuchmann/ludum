@@ -23,7 +23,7 @@ function mapToGlobal(pos, dir, scale) {
     return [p[0]+d[0], p[1]+d[1]];
 }
 
-var tiles = {
+var tilePolys = {
     empty    : null,
     solid    : null,
     downHalf : [left, right, downRight, downLeft],
@@ -34,7 +34,7 @@ var tiles = {
 };
 
 function boxToTile (a) {
-    console.log("tiletoBox:",JSON.stringify(a));
+
     var tileLookup = _.object([[[0,0,0,0], ["empty", 0]],
                                [[1,1,1,1], ["solid", 0]],
                                [[1,0,0,0], ["ulSolid", 0]],
@@ -51,16 +51,12 @@ function boxToTile (a) {
                                [[1,0,1,1], ["ulEmpty", 1]],
                                [[1,1,0,1], ["ulEmpty", 2]],
                                [[1,1,1,0], ["ulEmpty", 3]]]);
-    console.log("looked up:", JSON.stringify(tileLookup[a]));
+
     return tileLookup[a];
 }
 
 function getBox (bitmap, x, y) {
     var boxPoints = squarePoints(x,y);
-    console.log("bitmap:", JSON.stringify(bitmap));
-    console.log("x",x);
-    console.log("y",y);
-    console.log("points:",JSON.stringify(boxPoints));
     return _.map(boxPoints, function (p) { return bitmap.data[p[1]][p[0]];});
 }
 
@@ -69,16 +65,16 @@ function toTiles(bitmap) {
     for(var x = 0; x < bitmap.width - 1; x++) {
         for(var y = 0; y < bitmap.height - 1; y++) {
             var tile = boxToTile(getBox(bitmap, x, y));
-            console.log("tile", tile);
             var name = tile[0];
             var rotation = tile[1];
-            tiles.push([x,y,name,tiles[name],rotation]);
+            tiles.push([x,y,name,tilePolys[name],rotation]);
         }
     }
     return tiles;
 }
 
 module.exports = {
+    tiles: tilePolys,
     toTiles : toTiles,
     boxToTile : boxToTile
 };
