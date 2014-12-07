@@ -4,12 +4,13 @@ var m = require('./marchingsquares.js');
 
 var drawLine = imtools.drawLine;
 
-var testData = {height : 4,
-                width  : 3,
-                data   : [[1, 0, 1],
-                          [0, 0, 0],
-                          [0, 0, 0],
-                          [1, 1, 1]]};
+var testData = {height : 5,
+                width  : 5,
+                data   : [[1, 1, 1, 1, 1],
+			  [1, 1, 0, 1, 1],
+                          [1, 0, 0, 0, 1],
+                          [1, 0, 0, 0, 1],
+                          [1, 1, 1, 1, 1]]};
 
 function s (foo) {
     return JSON.stringify(foo);
@@ -33,8 +34,10 @@ var test = function() {
     var imgd = ctx.getImageData(0, 0, 2, 2);
     var bm = imtools.imageDataToBitmap(imgd);
     console.log("slice:", s(bm));
-    console.log("tiles:", s(m.toTiles(bm)));
+    var ret = m.toTiles(testData);
+    console.log("tiles:", s(ret));
     console.log(s(m.tiles["ulEmpty"]));
+    return ret;
 };
 
 

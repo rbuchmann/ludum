@@ -3,17 +3,9 @@ var tiles;
 var player;
 
 var tileSize = 128;
-var halfTile = tileSize/2;
+var halfSize = tileSize/2;
 
 var levelgen = require('./levelgen');
-
-var curHeight = 300;
-var points = _.map(_.range(100), function(idx){
-	curHeight = curHeight + (Math.random()-0.5)*10;
-	x = idx*40;
-	return [x, curHeight];
-});
-points.push([4000,1000], [0,1000]);
 
 function polygon(points) {
   return new Phaser.Polygon(_.map(points, function(p) {
@@ -32,23 +24,31 @@ function resize(pt) {
   return [pt[0]*tileSize, pt[1]*tileSize];
 }
 
-function addTile(x, y, poly) {
-  var tile = tiles.create(tileSize*x, tileSize*y);
+function addTile(x, y, name, poly, rotation) {
+  if (name == "empty") return;
+  var tile = game.add.tileSprite(tileSize*x+halfSize, tileSize*y+halfSize, 
+				 tileSize, tileSize, name);
+//				 tileSize, tileSize);
   var points = _.map(poly,resize);
-  game.physics.p2.enable(tile, true);
-  tile.body.clearShapes();
-  console.log("poly "+points);
-  tile.body.addPolygon({}, points);
-  tile.body.kinematic = true;  
-}
+//  tile.anchor.setTo(0.5,0.5);
+  if (poly != null) {
+    game.physics.p2.enable(tile, true);
+//    game.physics.p2.enable(tile);
+    tile.body.clearShapes();
+    tile.body.addPolygon({}, points);
+    tile.body.angle=90*rotation;
+    tile.body.kinematic = true;  
+  }
+} 
 
 function generateTiles(tileData) {
-  addTile(0,0,[[0,0],[1,0],[1,1],[0,1]]);
-  addTile(2,2,[[0,0],[1,0],[1,1],[0,1]]);
+  _.forEach(tileData, function(t) {
+    addTile(t[0],t[1],t[2],t[3],t[4]);
+  });
 }
 
 function init(_game) {
-  game = _game;
+  game = _game; 
   tiles = game.add.group();
   generateTiles(levelgen.test());
 }

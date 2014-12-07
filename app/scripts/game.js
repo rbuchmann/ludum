@@ -15,6 +15,13 @@ function preload() {
   game.load.image('ant', 'assets/antball.png');
   game.load.image('cursor1', 'images/cursor1.png');
   game.load.image('cursor2', 'images/cursor2.png');
+  game.load.image('downHalf', 'images/downHalf.png');
+  game.load.image('leftHalf', 'images/leftHalf.png');
+  game.load.image('solid', 'images/solid.png');
+  game.load.image('ulBridge', 'images/ulBridge.png');
+  game.load.image('ulEmpty', 'images/ulEmpty.png');
+  game.load.image('ulSolid', 'images/ulSolid.png');
+
 }
 
 function create() {
