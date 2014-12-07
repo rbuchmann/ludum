@@ -10,7 +10,7 @@ var player = require('./player');
 var level = require('./level');
 
 function preload() {
-  game.load.image('zombee', 'assets/zombee/zombee_0.png');
+  game.load.spritesheet('zombee', 'assets/zombee/zombee_sprite.png', 685,781);
 //  game.load.image('zombee', 'assets/zombee.jpg');
   game.load.image('ant', 'assets/antball.png');
   game.load.image('cursor1', 'images/cursor1.png');
