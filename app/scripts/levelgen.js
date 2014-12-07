@@ -26,18 +26,16 @@ var test = function() {
     var ctx = buffer.getContext('2d');
     ctx.fillStyle = "rgba(255,255,255,255)";
     ctx.fillRect(0,0,600,350);
+    ctx.fillStyle = "rgba(0,255,0,255)";
+    var x = 70;
+    var y = 60;
+    var size = 80;
+    //ctx.fillRect(x,y, size, size);
     ctx.drawImage(img,0,0);
-
-    ctx.fillStyle = "rgba(0,0,0,255)";
-    ctx.fillRect(0,0,1,1);
-    imtools.drawComb(ctx, [40,40],20);
-    var imgd = ctx.getImageData(0, 0, 2, 2);
+    imtools.drawComb(ctx, [40,40], 20);
+    var imgd = ctx.getImageData(x, y, size, size);
     var bm = imtools.imageDataToBitmap(imgd);
-    console.log("slice:", s(bm));
-    var ret = m.toTiles(testData);
-    console.log("tiles:", s(ret));
-    console.log(s(m.tiles["ulEmpty"]));
-    return ret;
+    return m.toTiles(bm);
 };
 
 

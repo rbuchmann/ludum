@@ -35,7 +35,11 @@ function drawComb (ctx, p, r) {
     var points = _.map(angles, function (phi) {return [r*Math.sin(phi) + p[0], r*Math.cos(phi) + p[1]];});
     console.log("points", points);
     drawPolyLine(ctx, points);
+    ctx.beginPath();
+    ctx.arc(p[0], p[1], r*0.7, 0, 2*Math.PI);
+    ctx.stroke();
 }
+
 
 function colToMarker(c) {
     return _.max(c) === 0 ? 0 : 1 ;
