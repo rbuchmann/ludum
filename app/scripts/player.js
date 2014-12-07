@@ -11,11 +11,18 @@ function init(gm) {
 
 function addPlayer(x, y) {
   playerSprite = playerGroup.create(x, y, 'ant');
-  playerSprite.anchor.setTo(0.0, 0.0);
+  playerSprite.scale.setTo(0.4, 0.4);
+  playerSprite.anchor.setTo(0.5, 0.5);
   game.physics.p2.enable(playerSprite);
-  playerSprite.body.setCollisionGroup(playerCollisionGroup);
-  playerSprite.body.data.gravityScale = 5;
-  playerSprite.body.collideWorldBounds = true;
+  body = playerSprite.body;
+  body.clearShapes();
+  body.addCircle(37);
+  body.setCollisionGroup(playerCollisionGroup);
+  body.data.gravityScale = 5;
+  body.mass=100;
+  body.collideWorldBounds = true;
+  body.damping=0.0;
+  body.angularDamping=0.5;
   game.camera.follow(playerSprite, Phaser.Camera.FOLLOW_PLATFORMER);
 }
 
