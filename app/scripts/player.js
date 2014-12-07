@@ -51,13 +51,17 @@ function deactivateJump(){
   }
 }
 
+function inAir(){
+  return !canJump;
+}
+
 
 function control(cursors){
   if (cursors.left.isDown) {
-    move(1);
+    move((inAir()) ? 0.1 : 1);
   }
   if (cursors.right.isDown) {
-    move(-1);
+    move((inAir()) ? -0.1 : -1);
   }
   if (cursors.up.isDown && canJump){
     move(0,50);

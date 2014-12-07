@@ -22,30 +22,36 @@ function addBee(x, y) {
   bee.body.velocity.x = -100;
 } 
 
+function updateBeeDir(bee){
+  if(bee.body.velocity.x > 0 && bee.scale.x > 0){
+    bee.scale.x *= -1;
+  } else if(bee.body.velocity.x < 0 && bee.scale.x < 0){
+    bee.scale.x *= -1;
+  }
+}
+
 function target(bee, pos){
   var dx = pos.x - bee.x;
   var dy = pos.y - bee.y;
+  if(dx * dx + dy*dy > 300000){
+    bee.rotation = 0;
+    return;
+  } 
   var rotCorr = 0;
-  if(bee.scale.x > 0){
-    if(dx > 0){
-      bee.scale.x *= -1;
-    }
-  } else if(bee.scale.x < 0){
+  if(bee.scale.x < 0){
     rotCorr = Math.PI;
-    if(dx < 0){
-      bee.scale.x *= -1;
-    }
   }
   var phi = Math.atan2(dy,dx);
   bee.rotation = phi+rotCorr;
 }
 
-function updateBees(player) {
+function updateBees(playerPos) {
   now = game.time.now;
   bees.forEach(function (bee) {
     t = (now - bee.startTime) / 300.0;
     bee.body.velocity.y = 70*Math.sin(t);
-    target(bee,player);
+    updateBeeDir(bee);
+    target(bee,playerPos);
   });
 }
 
