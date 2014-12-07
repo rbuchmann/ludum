@@ -25,6 +25,12 @@ function addPlayer(x, y) {
 }
 
 
+function abovePlayer(eq){
+  var b1 = (eq.bodyA.id == body.data.id) ? eq.bodyA : eq.bodyB;
+  var b2 = (eq.bodyA.id == body.data.id) ? eq.bodyB : eq.bodyA;
+  return b1.position[1] > b2.position[1]; 
+}
+
 // indicates if the player can jump
 var canJump = false;
 // if the player leaves the floor he can jump for a few seconds after it
@@ -32,6 +38,9 @@ var canJump = false;
 var jumpTimer = false;
 var timeoutID = null;
 function floorCollide(body, shapeA, shapeB, equation){
+  
+  var bottomWalls = _.filter(equation, function(eq){ return abovePlayer(eq); });
+  if(bottomWalls.length == 0) return;
   canJump = true;
   // player touches floor every timer discards "deactivate jump"
   jumpTimer = false;
