@@ -46,12 +46,11 @@ function boxToTile (a) {
                                [[1,0,0,1], ["leftHalf", 0]],
                                [[0,1,1,0], ["leftHalf", 2]],
                                [[1,0,1,0], ["ulBridge", 0]],
-                               [[0,1,0,1], ["ulBridge", 2]],
+                               [[0,1,0,1], ["ulBridge", 1]],
                                [[0,1,1,1], ["ulEmpty", 0]],
                                [[1,0,1,1], ["ulEmpty", 1]],
                                [[1,1,0,1], ["ulEmpty", 2]],
                                [[1,1,1,0], ["ulEmpty", 3]]]);
-
     return tileLookup[a];
 }
 
