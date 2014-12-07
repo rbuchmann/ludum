@@ -11,10 +11,15 @@ function init(gm) {
 function addBee(x, y) {
   var bee = bees.create(x, y, 'zombee');
   bee.startTime = game.time.now;
-  bee.scale.setTo(-0.08,0.08);
+  bee.scale.setTo(0.08,0.08);
   bee.anchor.setTo(0.5,0.75);
   bee.animations.add('fly',[0,1,2,1],40,true);
   bee.animations.play("fly");
+  game.physics.p2.enable(bee);
+  bee.body.fixedRotation = true;
+  bee.body.data.gravityScale = 0;
+  bee.body.damping = 0;
+  bee.body.velocity.x = -100;
 } 
 
 function target(bee, pos){
@@ -39,10 +44,9 @@ function updateBees(player) {
   now = game.time.now;
   bees.forEach(function (bee) {
     t = (now - bee.startTime) / 300.0;
-    bee.x = 30*t;
-    bee.y =  50 + 20*Math.sin(t);
+    bee.body.velocity.y = 70*Math.sin(t);
     target(bee,player);
-  }, undefined);
+  });
 }
 
 module.exports = {

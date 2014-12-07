@@ -12,8 +12,7 @@ var points = _.map(_.range(100), function(idx){
 	x = idx*40;
 	return [x, curHeight];
 });
-points.splice(0,0,[0,1000]);
-points.push([500,1000]);
+points.push([4000,1000], [0,1000]);
 
 function polygon(points) {
   return new Phaser.Polygon(_.map(points, function(p) {
