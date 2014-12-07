@@ -35,12 +35,7 @@ function create() {
 
 function update() {
   if (playerAlive) {
-    if (cursors.left.isDown) {
-      player.move(1);
-    }
-    else if (cursors.right.isDown) {
-      player.move(-1);
-    }
+    player.control(cursors);
   }
   bee.updateBees(player.position());
 }

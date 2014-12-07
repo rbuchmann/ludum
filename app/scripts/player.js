@@ -24,10 +24,61 @@ function addPlayer(x, y) {
   body.damping=0.2;
   body.angularDamping=0.2;
   game.camera.follow(playerSprite, Phaser.Camera.FOLLOW_PLATFORMER);
+  
+  body.onBeginContact.add(floorCollide, this);
+  body.onEndContact.add(floorLeave, this);
 }
 
-function move(x) {
-  body.applyForce([x*20, 0], playerSprite.x, playerSprite.y);
+
+// indicates if the player can jump
+var canJump = false;
+// if the player leaves the floor he can jump for a few seconds after it
+// if the player jumps he cannot jump again immediatly, this is done by "jumpTimer"
+var jumpTimer = false;
+var timeoutID = null;
+function floorCollide(body, shapeA, shapeB, equation){
+  canJump = true;
+  // player touches floor every timer discards "deactivate jump"
+  jumpTimer = false;
+  console.log("activatedJump");
+  clearTimeout(timeoutID);
+}
+
+function floorLeave(){
+  // player doesn't touch the floor timer accepts "deactivate jump"
+  jumpTimer = true;
+  clearTimeout(timeoutID);
+  timeoutID = setTimeout(function(){ deactivateJump() }, 1000);
+}
+
+function deactivateJump(){
+  if(jumpTimer){
+    canJump = false;
+    console.log("deactivatedJump");
+  }
+}
+
+
+function control(cursors){
+  if (cursors.left.isDown) {
+    move(1);
+  }
+  if (cursors.right.isDown) {
+    move(-1);
+  }
+  if (cursors.up.isDown){
+    if(canJump){
+      move(0,50);
+      canJump = false;
+    } else {
+      console.log("no JUMP!!");
+    }
+  }
+}
+
+function move(x,y) {
+  y = y || 0;
+  body.applyForce([x*20, y*20], playerSprite.x, playerSprite.y);
 }
 
 module.exports = {
@@ -36,5 +87,6 @@ module.exports = {
   sprite: function() {return playerSprite;},
   collisionGroup: function() {return playerCollisionGroup;},
   move: move,
+  control: control,
   position: function() { return {x: playerSprite.x, y: playerSprite.y} }
 }
