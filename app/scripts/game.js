@@ -30,7 +30,7 @@ function create() {
   player.addPlayer(100, 100);
   level.init(game, player);
   bee.init(game);
-  bee.addBee(500, 200);
+  bee.addBee(500, 30);
 }
 
 function update() {

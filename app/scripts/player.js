@@ -48,7 +48,7 @@ function floorLeave(){
   // player doesn't touch the floor timer accepts "deactivate jump"
   jumpTimer = true;
   clearTimeout(timeoutID);
-  timeoutID = setTimeout(function(){ deactivateJump() }, 1000);
+  timeoutID = setTimeout(function(){ deactivateJump() }, 500);
 }
 
 function deactivateJump(){
