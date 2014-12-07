@@ -18,7 +18,7 @@ function addPlayer(x, y) {
   body.clearShapes();
   body.addCircle(37);
   body.setCollisionGroup(playerCollisionGroup);
-  body.data.gravityScale = 5;
+  body.data.gravityScale = 1;
   body.mass=100;
   body.collideWorldBounds = true;
   body.damping=0.0;
@@ -27,8 +27,6 @@ function addPlayer(x, y) {
 }
 
 function move(x, y) {
-  playerSprite.body.moveRight(x);
-  playerSprite.body.moveDown(y);
 }
 
 module.exports = {

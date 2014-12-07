@@ -3,8 +3,17 @@ var levelSprites;
 var levelGraphics;
 var levelCollisionGroup;
 
-var points = [[0, 100], [100, 200], [200, 300], [300, 250], [400, 300], [500, 400],
-	      [500, 1000], [0, 1000]];
+//var points = [[0, 100], [100, 200], [200, 300], [300, 250], [400, 300], [500, 400],
+	      //[500, 1000], [0, 1000]];
+
+var curHeight = 300;
+var points = _.map(_.range(500), function(idx){
+	curHeight = curHeight + (Math.random()-0.5)*10;
+	x = idx*40;
+	return [x, curHeight];
+});
+points.splice(0,0,[0,1000]);
+points.push([500,1000]);
 
 function polygon(points) {
   return new Phaser.Polygon(_.map(points, function(p) {

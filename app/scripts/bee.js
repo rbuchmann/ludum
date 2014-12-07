@@ -20,7 +20,7 @@ function updateBees() {
   now = game.time.now;
   bees.forEach(function (bee) {
     t = (now - bee.startTime) / 300.0;
-    bee.x = 1000-30*t;
+    bee.x = 1000+30*t;
     bee.y =  400 + 100*Math.sin(t);
   }, undefined);
 }
