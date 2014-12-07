@@ -1,12 +1,24 @@
-function getPixel( imagedata, x, y ) {
-    var position = ( x + imagedata.width * y ) * 4, data = imagedata.data;
-    return { r: data[ position ], g: data[ position + 1 ], b: data[ position + 2 ]};
+var tools = require('./tools.js');
+var imtools = require('./imagetools.js');
+var m = require('./marchingsquares.js');
+
+var drawLine = imtools.drawLine;
+
+function testMS (ctx,a) {
+    var lines = m.boxToSegments(a);
+    _.forEach(lines, _.curry(drawLine)(ctx));
 }
 
-function boxToSegments (a) {
+function mlog(d) {
+    console.log(JSON.stringify(d));
 }
 
-test = function() {
+var testData = {height : 2,
+                width  : 3,
+                data   : [[1, 0, 1],
+                          [0, 0, 0]]};
+
+var test = function() {
     buffer = document.createElement('canvas');
     buffer.width = 600;
     buffer.height = 350;
@@ -16,9 +28,11 @@ test = function() {
     ctx.drawImage(img,0,0);
     document.body.appendChild(buffer);
     imgd = ctx.getImageData(0, 0, 600, 350);
-    console.log(getPixel(imgd, 50, 50));
-    console.log('Foo2');
+    console.log("Marched:");
+    mlog(m.toPolys(testData));
+    testMS(ctx, [1,0,1,0]);
 };
+
 
 module.exports = {
     test : test
