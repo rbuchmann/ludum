@@ -2,6 +2,7 @@ var game;
 var playerGroup;
 var playerSprite;
 var playerCollisionGroup;
+var body;
 
 function init(gm) {
   game = gm;
@@ -19,14 +20,14 @@ function addPlayer(x, y) {
   body.addCircle(37);
   body.setCollisionGroup(playerCollisionGroup);
   body.data.gravityScale = 1;
-  body.mass=100;
-  body.collideWorldBounds = true;
-  body.damping=0.0;
-  body.angularDamping=0.5;
+  body.mass=1;
+  body.damping=0.2;
+  body.angularDamping=0.2;
   game.camera.follow(playerSprite, Phaser.Camera.FOLLOW_PLATFORMER);
 }
 
-function move(x, y) {
+function move(x) {
+  body.applyForce([x*20, 0], playerSprite.x, playerSprite.y);
 }
 
 module.exports = {

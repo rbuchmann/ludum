@@ -7,7 +7,7 @@ var levelCollisionGroup;
 	      //[500, 1000], [0, 1000]];
 
 var curHeight = 300;
-var points = _.map(_.range(500), function(idx){
+var points = _.map(_.range(100), function(idx){
 	curHeight = curHeight + (Math.random()-0.5)*10;
 	x = idx*40;
 	return [x, curHeight];

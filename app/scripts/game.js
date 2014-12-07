@@ -25,9 +25,9 @@ function create() {
   mouse = game.input.mousePointer;
   game.world.setBounds(0, 0, 3000, 3000); 
   game.physics.startSystem(Phaser.Physics.P2JS);
-  game.physics.p2.gravity.y = 200;
+  game.physics.p2.gravity.y = 300;
   game.physics.p2.setImpactEvents(true);
-  game.physics.p2.restitution = 0.8;
+  game.physics.p2.restitution = 0.6;
   playerAlive = true;
   player.init(game);
   player.addPlayer(100, 100);
@@ -39,16 +39,12 @@ function create() {
 function update() {
   if (playerAlive) {
     if (cursors.left.isDown) {
-      velocity = -100;
+      player.move(1);
     }
     else if (cursors.right.isDown) {
-      velocity = 100;
-    }
-    else {
-      velocity = 0;
+      player.move(-1);
     }
   }
-  player.move(velocity, 0);
   bee.updateBees();
 }
 
