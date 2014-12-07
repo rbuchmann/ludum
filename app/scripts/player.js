@@ -40,7 +40,6 @@ function floorCollide(body, shapeA, shapeB, equation){
   canJump = true;
   // player touches floor every timer discards "deactivate jump"
   jumpTimer = false;
-  console.log("activatedJump");
   clearTimeout(timeoutID);
 }
 
@@ -54,7 +53,6 @@ function floorLeave(){
 function deactivateJump(){
   if(jumpTimer){
     canJump = false;
-    console.log("deactivatedJump");
   }
 }
 
@@ -66,13 +64,9 @@ function control(cursors){
   if (cursors.right.isDown) {
     move(-1);
   }
-  if (cursors.up.isDown){
-    if(canJump){
-      move(0,50);
-      canJump = false;
-    } else {
-      console.log("no JUMP!!");
-    }
+  if (cursors.up.isDown && canJump){
+    move(0,50);
+    canJump = false;
   }
 }
 
