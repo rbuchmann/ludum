@@ -35,5 +35,6 @@ module.exports = {
   addPlayer: addPlayer,
   sprite: function() {return playerSprite;},
   collisionGroup: function() {return playerCollisionGroup;},
-  move: move
+  move: move,
+  position: function() { return {x: playerSprite.x, y: playerSprite.y} }
 }

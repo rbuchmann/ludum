@@ -17,9 +17,6 @@ function preload() {
   game.load.image('cursor2', 'images/cursor2.png');
 }
 
-var points = [[0, 0], [100, 0], [50, 100]];
-
-
 function create() {
   cursors = game.input.keyboard.createCursorKeys();
   mouse = game.input.mousePointer;
@@ -45,7 +42,8 @@ function update() {
       player.move(-1);
     }
   }
-  bee.updateBees();
+  bee.updateBees(player.position());
+  player.move(velocity, 0);
 }
 
 module.exports = {
