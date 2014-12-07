@@ -29,6 +29,7 @@ var test = function() {
 
     ctx.fillStyle = "rgba(0,0,0,255)";
     ctx.fillRect(0,0,1,1);
+    imtools.drawComb(ctx, [40,40],20);
     var imgd = ctx.getImageData(0, 0, 2, 2);
     var bm = imtools.imageDataToBitmap(imgd);
     console.log("slice:", s(bm));
