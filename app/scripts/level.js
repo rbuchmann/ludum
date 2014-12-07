@@ -2,6 +2,11 @@ var game;
 var tiles;
 var player;
 
+var tileSize = 128;
+var halfTile = tileSize/2;
+
+var levelgen = require('./levelgen');
+
 var curHeight = 300;
 var points = _.map(_.range(100), function(idx){
 	curHeight = curHeight + (Math.random()-0.5)*10;
@@ -23,19 +28,29 @@ function drawTile (points) {
   g.endFill();
 }
 
-function addTile(points) {
-  drawTile(points);
-  var tile = game.add.sprite(0, 0);
-  game.physics.p2.enable(tile);
+function resize(pt) {
+  return [pt[0]*tileSize, pt[1]*tileSize];
+}
+
+function addTile(x, y, poly) {
+  var tile = tiles.create(tileSize*x, tileSize*y);
+  var points = _.map(poly,resize);
+  game.physics.p2.enable(tile, true);
   tile.body.clearShapes();
+  console.log("poly "+points);
   tile.body.addPolygon({}, points);
   tile.body.kinematic = true;  
-  drawTile(points);
+}
+
+function generateTiles(tileData) {
+  addTile(0,0,[[0,0],[1,0],[1,1],[0,1]]);
+  addTile(2,2,[[0,0],[1,0],[1,1],[0,1]]);
 }
 
 function init(_game) {
   game = _game;
-  addTile(points);
+  tiles = game.add.group();
+  generateTiles(levelgen.test());
 }
 
 module.exports = {
