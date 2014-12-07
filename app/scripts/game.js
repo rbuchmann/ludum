@@ -28,7 +28,7 @@ function create() {
   playerAlive = true;
   player.init(game);
   player.addPlayer(100, 100);
-  level.init(game, player);
+  level.init(game);
   bee.init(game);
   bee.addBee(500, 30);
 }

@@ -8,11 +8,12 @@ function mlog(d) {
     console.log(JSON.stringify(d));
 }
 
-var testData = {height : 3,
+var testData = {height : 4,
                 width  : 3,
                 data   : [[1, 0, 1],
                           [0, 0, 0],
-                          [0, 0, 0]]};
+                          [0, 0, 0],
+                          [1, 1, 1]]};
 
 var test = function() {
     var buffer = document.createElement('canvas');
@@ -25,7 +26,9 @@ var test = function() {
     document.body.appendChild(buffer);
     var imgd = ctx.getImageData(0, 0, 600, 350);
     console.log("Marched:");
-    mlog(m.toTiles(testData));
+    var res = m.toTiles(testData);
+    mlog(res);
+    return res;
 };
 
 

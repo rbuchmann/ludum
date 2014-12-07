@@ -1,13 +1,11 @@
 var game;
 var playerGroup;
 var playerSprite;
-var playerCollisionGroup;
 var body;
 
 function init(gm) {
   game = gm;
   playerGroup = game.add.group();
-  playerCollisionGroup = game.physics.p2.createCollisionGroup();
 }
 
 function addPlayer(x, y) {
@@ -18,9 +16,6 @@ function addPlayer(x, y) {
   body = playerSprite.body;
   body.clearShapes();
   body.addCircle(37);
-  body.setCollisionGroup(playerCollisionGroup);
-  body.data.gravityScale = 1;
-  body.mass=1;
   body.damping=0.2;
   body.angularDamping=0.2;
   game.camera.follow(playerSprite, Phaser.Camera.FOLLOW_PLATFORMER);
@@ -79,7 +74,6 @@ module.exports = {
   init: init,
   addPlayer: addPlayer,
   sprite: function() {return playerSprite;},
-  collisionGroup: function() {return playerCollisionGroup;},
   move: move,
   control: control,
   position: function() { return {x: playerSprite.x, y: playerSprite.y} }
