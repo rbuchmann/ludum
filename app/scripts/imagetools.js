@@ -29,8 +29,13 @@ function drawPolyLine (ctx, pl, color) {
     ctx.stroke();
 }
 
+function colToMarker(c) {
+    return _.max(c) === 0 ? 0 : 1 ;
+}
+
 module.exports = {
     drawPolyLine : drawPolyLine,
     drawLine : drawLine,
-    getPixel : getPixel
+    getPixel : getPixel,
+    colToMarker : colToMarker
 };

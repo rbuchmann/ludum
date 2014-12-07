@@ -1,42 +1,16 @@
 var tools = require('./tools.js');
 
-function line (a,b) {
-    return [a,b];
-}
+var down      = [0.5,1];
+var left      = [0,0.5];
+var up        = [0.5,0];
+var right     = [1,0.5];
+var upLeft    = [0,0];
+var upRight   = [1,0];
+var downRight = [1,1];
+var downLeft  = [0,1];
 
-var down  = [0.5,1];
-var left  = [0,0.5];
-var up    = [0.5,0];
-var right = [1,0.5];
-
-function boxToSegments (a) {
-    var marchingLookup = _.object([[[0,0,0,0], []],
-                                   [[1,1,1,1], []],
-                                   [[1,0,0,0], [line(left, up)]],
-                                   [[0,1,0,0], [line(up, right)]],
-                                   [[0,0,1,0], [line(right, down)]],
-                                   [[0,0,0,1], [line(down, left)]],
-                                   [[0,0,1,1], [line(left, up)]],
-                                   [[1,1,0,0], [line(left, up)]],
-                                   [[1,0,0,1], [line(right, up)]],
-                                   [[0,1,1,0], [line(right, up)]],
-                                   [[1,0,1,0], [line(left, down),
-                                                line(up,right)]],
-                                   [[0,1,0,1], [line(left, up),
-                                                line(down,right)]],
-                                   [[0,1,1,1], [line(left, up)]],
-                                   [[1,0,1,1], [line(up, right)]],
-                                   [[1,1,0,1], [line(right, down)]],
-                                   [[1,1,1,0], [line(down, left)]]]);
-    return marchingLookup[a];
-}
-
-function cubePoints(x,y) {
+function squarePoints(x,y) {
     return [[x,y], [x + 1, y], [x+1,y+1], [x,y+1]];
-}
-
-function colToMarker(c) {
-    return _.max(c) === 0 ? 0 : 1 ;
 }
 
 function mapToGlobal(pos, dir, scale) {
@@ -49,36 +23,62 @@ function mapToGlobal(pos, dir, scale) {
     return [p[0]+d[0], p[1]+d[1]];
 }
 
-function dirChecker (dir) {
-    return function(col) {
-        return _.contains(col, dir);
-    };
+var tiles = {
+    empty    : null,
+    solid    : null,
+    downHalf : [left, right, downRight, downLeft],
+    leftHalf : [upLeft, up, down, downLeft],
+    ulEmpty  : [left, up, upRight, downRight, downLeft],
+    ulSolid  : [upLeft, up, left],
+    ulBridge : [upLeft, up, right, downRight, down, left]
+};
+
+function boxToTile (a) {
+    console.log("tiletoBox:",JSON.stringify(a));
+    var tileLookup = _.object([[[0,0,0,0], ["empty", 0]],
+                               [[1,1,1,1], ["solid", 0]],
+                               [[1,0,0,0], ["ulSolid", 0]],
+                               [[0,1,0,0], ["ulSolid", 1]],
+                               [[0,0,1,0], ["ulSolid", 2]],
+                               [[0,0,0,1], ["ulSolid", 3]],
+                               [[0,0,1,1], ["downHalf", 0]],
+                               [[1,1,0,0], ["downHalf", 2]],
+                               [[1,0,0,1], ["leftHalf", 0]],
+                               [[0,1,1,0], ["leftHalf", 2]],
+                               [[1,0,1,0], ["ulBridge", 0]],
+                               [[0,1,0,1], ["ulBridge", 2]],
+                               [[0,1,1,1], ["ulEmpty", 0]],
+                               [[1,0,1,1], ["ulEmpty", 1]],
+                               [[1,1,0,1], ["ulEmpty", 2]],
+                               [[1,1,1,0], ["ulEmpty", 3]]]);
+    console.log("looked up:", JSON.stringify(tileLookup[a]));
+    return tileLookup[a];
 }
 
-function toPolys(bitmap) {
-    var polys = [];
-    var squares = [];
-    var unneeded = [];
-    for(y = 0; y < bitmap.height - 1; y++) {
-        squares[y] = [];
-        for(x = 0; x < bitmap.width - 1; x++) {
-            var left = x === 0 ? false : squares[y][x-1].right;
-            var up = y === 0 ? false : squares[y-1][x].down;
-            var isInside = function(p) {return bitmap.data[p[1]][p[0]];};
-            var box = _.map(cubePoints(x,y), isInside);
-            var segments = boxToSegments(box);
-            squares[y][x] = {};
-            squares[y][x].down = _.some(segments, dirChecker(down));
-            squares[y][x].right = _.some(segments, dirChecker(right));
-            _.forEach(segments, function (s) {polys.push(s);});
-            var b = [2,2,[4,5]];
-            var a = [1, b, 3];
+function getBox (bitmap, x, y) {
+    var boxPoints = squarePoints(x,y);
+    console.log("bitmap:", JSON.stringify(bitmap));
+    console.log("x",x);
+    console.log("y",y);
+    console.log("points:",JSON.stringify(boxPoints));
+    return _.map(boxPoints, function (p) { return bitmap.data[p[1]][p[0]];});
+}
+
+function toTiles(bitmap) {
+    var tiles = [];
+    for(var x = 0; x < bitmap.width - 1; x++) {
+        for(var y = 0; y < bitmap.height - 1; y++) {
+            var tile = boxToTile(getBox(bitmap, x, y));
+            console.log("tile", tile);
+            var name = tile[0];
+            var rotation = tile[1];
+            tiles.push([x,y,name,tiles[name],rotation]);
         }
     }
-    return polys;
+    return tiles;
 }
 
 module.exports = {
-    toPolys : toPolys,
-    boxToSegments : boxToSegments
+    toTiles : toTiles,
+    boxToTile : boxToTile
 };
